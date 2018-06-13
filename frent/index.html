@@ -8,12 +8,13 @@
   <meta http-equiv="X-UA-Compatible"
     content="ie=edge">
   <link rel="stylesheet"
-    href="./ele.css">
+    href="/frent/static/ele.css">
   <link rel="stylesheet"
-    href="./style.css">
-  <script src="./vue.js"></script>
-  <script src="./ele.js"></script>
-  <script src="./axios.js"></script>
+    href="/frent/static/style.css">
+  <script src="/frent/static/vue.js"></script>
+  <script src="/frent/static/ele.js"></script>
+  <script src="/frent/static/axios.js"></script>
+  <script src="/frent/static/axs.js"></script>
   <title>Document</title>
 </head>
 
@@ -100,6 +101,11 @@
       }
     },
     methods: {
+      getList() {
+        getList().then(res => {
+          console.log(res)
+        })
+      },
       clear() {
         this.item = copy(dataTemplate)
       },
@@ -109,7 +115,6 @@
         } else {
           this.list.push(this.item)
         }
-
       }
     },
     mounted() {
