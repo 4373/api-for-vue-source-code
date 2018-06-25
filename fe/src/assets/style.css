@@ -1,0 +1,13 @@
+@import '/vutify.css';
+@import '/flex.css';
+html, body{
+  padding: 0;
+  margin: 0; 
+}
+body{
+  background: #efefee
+}
+.snippet{
+  font-family: consolas!important;
+  margin: -14px 0;
+}

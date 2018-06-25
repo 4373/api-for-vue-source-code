@@ -1,1 +1,1 @@
-[{"name":"me","path":"/me/dsfs","id":"0b8e0bcd2e99d47538ae3f8b85e7f593"}]
+[{"name":"isUndef","path":"/shared/util.js","desc":"","detail":"export function isUndef (v: any): boolean %checks {\n  return v === undefined || v === null\n}","id":"f0fdfcbef7e245f47aabc3c73405505f"}]

@@ -46,11 +46,10 @@ const updateItem = (path, item) => {
   return new Promise((resolve) => {
     getList(path).then(res => {
       const id = md5(`${item.path}/${item.name}`)
-      const isExit = res.some(it => it.id === id)
+      const isExit = res.some(it => it.id === id && item.id !== id)
       if (isExit) {
         resolve('已存在同名方法和路径！')
       } else {
-        
         let i = res.findIndex(it => it.id === item.id)
         if(i === -1) resolve('未更新，该项不存在')
         else {
@@ -91,12 +90,12 @@ const getItem = (path, id) => {
         if (Array.isArray(arr)) {
           const obj = arr.find(it => it.id == id)
           if(obj !== undefined) resolve(obj)
-          else reject('没有找到数据')
+          else resolve('没有找到数据')
         } else {
-          reject('this list is not Array')
+          resolve('this list is not Array')
         }
       } catch (e) {
-        reject('this list can not stringigy')
+        resolve('this list can not stringigy')
       }
     })
   })

@@ -3,7 +3,8 @@ const join = require('path').join
 const fs = require('fs')
 
 module.exports.sendStaticFile =function(req, res) {
-  var url = parse(req.url)
+  let get = req.url === '/' ? '/index.html' : req.url
+  var url = parse(get)
   var path = join(__dirname, url.pathname)
   fs.stat(path, function (err, stat) {
     if (err) {
