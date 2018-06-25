@@ -30,6 +30,7 @@ const addItem = (path, item) => {
         resolve('该项已存在！')
       } else {
         item.id = md5(`${item.path}/${item.name}`)
+        item.time = new Date().toLocaleString()
         res.push(item)
         fs.writeFile(join(__dirname, path), JSON.stringify(res), err => {
           if (err) resolve('写入错误！')
@@ -53,7 +54,7 @@ const updateItem = (path, item) => {
         let i = res.findIndex(it => it.id === item.id)
         if(i === -1) resolve('未更新，该项不存在')
         else {
-          const w = Object.assign(res[i], item)
+          const w = Object.assign(res[i], item, {time: new Date().toLocaleString()})
           res.splice(i, 1, w)
           fs.writeFile(join(__dirname, path), JSON.stringify(res), err => {
             if (err) resolve('更新失败！')

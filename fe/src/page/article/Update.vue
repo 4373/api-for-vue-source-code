@@ -39,8 +39,8 @@
     },
     methods: {
       submit() {
-        const { name, path, desc } = this.query
-        if (name.trim() === '' || path.trim() === '' || desc.trim() === '') {
+        const { name, path, detail } = this.query
+        if (name.trim() === '' || path.trim() === '' || detail.trim() === '') {
           this.$message('请输入必填项')
         } else {
           this.$api.post('/update', { type: 'vue', data: this.query }).then(res => {
@@ -57,6 +57,7 @@
             this.query = res
           } else {
             this.$message(res)
+            this.$router.push('/article/list')
           }
         })
       }

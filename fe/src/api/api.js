@@ -2,7 +2,6 @@ import axios from 'axios'
 import qs from 'qs'
 
 const service = axios.create({
-  baseURL: 'http://localhost:8888'
 })
 
 service.interceptors.request.use(function (config) {

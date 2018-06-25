@@ -1,19 +1,23 @@
 <style scoped>
-  .code{
+  .code {
     position: relative;
     height: 50px;
   }
-  .code .content{
+
+  .code .content {
     position: absolute;
     top: 40px;
     left: 0;
   }
-  .code .content{
+
+  .code .content {
     display: none;
   }
-  .code:hover .content{
+
+  .code:hover .content {
     display: block;
   }
+
 </style>
 <template>
   <div>
@@ -29,21 +33,32 @@
           <th>路径</th>
           <th>详情</th>
           <th>描述</th>
+          <th>最近操作</th>
           <th>操作</th>
         </tr>
       </thead>
       <tbody slot='tbody'>
         <tr v-for='(item, key) in filterList' :key='key'>
           <td style="width: 300px">{{item.id}}</td>
-          <td>{{item.name}}</td>
-          <td>{{item.path}}</td>
-          <td style="padding: 0;">
-              <div class="code">
-                  <span class='title pointer'>详情</span>
-                  <pre class="content"><code class="snippet hljs javascript">{{item.detail}}</code></pre>
-              </div>
+          <td>
+            <el-tag type='success'>{{item.name}}</el-tag>
           </td>
-          <td>{{item.desc}}</td>
+          <td>
+            <el-tag>{{item.path}}</el-tag>
+          </td>
+          <td>
+            <div class="code">
+              <el-tag type='info'>详情</el-tag>
+              <pre class="content"><code class="snippet hljs javascript">{{item.detail}}</code></pre>
+            </div>
+          </td>
+          <td>
+            <div class="code">
+              <el-tag type='info'>描述</el-tag>
+              <pre class="content" v-show='item.desc'><code class="snippet hljs">{{item.desc}}</code></pre>
+            </div>
+          </td>
+          <td>{{item.time}}</td>
           <td>
             <el-button @click='del(item.id)'>删除</el-button>
             <el-button @click='update(item.id)'>编辑</el-button>
@@ -68,6 +83,15 @@
         })
       }
     },
+    updated() {
+      var snippet = document.querySelectorAll('.snippet')
+      if (snippet !== null) {
+        snippet = Array.from(snippet)
+        snippet.forEach(item => {
+          hljs.highlightBlock(item)
+        })
+      }
+    },
     methods: {
       getList() {
         this.$api.post('/list', {
@@ -75,14 +99,14 @@
         }).then(res => {
           this.list = res
           this.$nextTick().then(() => {
-          var snippet = document.querySelectorAll('.snippet')
+            var snippet = document.querySelectorAll('.snippet')
             if (snippet !== null) {
               snippet = Array.from(snippet)
               snippet.forEach(item => {
                 hljs.highlightBlock(item)
               })
             }
-        })
+          })
         })
       },
       update(id) {

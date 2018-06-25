@@ -15,7 +15,7 @@
       <el-input v-model='query.desc' type='textarea' :autosize="{ minRows: 10}"></el-input>
     </ikv>
     <ikv name='操作'>
-      <el-button style="width: 49%" @click='$router.push("/article/list")'>取消</el-button>
+      <el-button style="width: 49%" @click='$router.push("/article/list")'>返回</el-button>
       <el-button style="width: 49%" @click='submit'>确认</el-button>
     </ikv>
   </div>
@@ -41,6 +41,8 @@
         } else {
           this.$api.post('/add', { type: 'vue', data: this.query }).then(res => {
             this.$message(res)
+            this.query.name = ''
+            this.query.detail = ''
           })
         }
 
