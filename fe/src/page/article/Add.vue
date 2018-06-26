@@ -43,6 +43,7 @@
             this.$message(res)
             this.query.name = ''
             this.query.detail = ''
+            this.query.desc = ''
           })
         }
 

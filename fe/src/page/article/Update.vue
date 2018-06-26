@@ -45,6 +45,7 @@
         } else {
           this.$api.post('/update', { type: 'vue', data: this.query }).then(res => {
             this.$message(res)
+            this.$router.push('/article/list')
           })
         }
       },
@@ -57,7 +58,7 @@
             this.query = res
           } else {
             this.$message(res)
-            this.$router.push('/article/list')
+            
           }
         })
       }

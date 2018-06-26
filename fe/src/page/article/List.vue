@@ -1,21 +1,15 @@
 <style scoped>
   .code {
     position: relative;
-    height: 50px;
+    height: 30px;
   }
 
-  .code .content {
-    position: absolute;
-    top: 40px;
-    left: 0;
-  }
 
-  .code .content {
-    display: none;
-  }
 
-  .code:hover .content {
-    display: block;
+  .font {
+    font-family: consolas;
+    font-weight: bold;
+    font-size: 18px;
   }
 
 </style>
@@ -41,22 +35,20 @@
         <tr v-for='(item, key) in filterList' :key='key'>
           <td style="width: 300px">{{item.id}}</td>
           <td>
-            <el-tag type='success'>{{item.name}}</el-tag>
+            <span class="font" style="color: #39f">{{item.name}}</span>
           </td>
           <td>
-            <el-tag>{{item.path}}</el-tag>
+            <span class="font">{{item.path}}</span>
           </td>
           <td>
-            <div class="code">
+            <div class="code pointer" @mouseenter='show($event.target,item)' @mouseleave='hide($event.target)'>
               <el-tag type='info'>详情</el-tag>
-              <pre class="content"><code class="snippet hljs javascript">{{item.detail}}</code></pre>
             </div>
           </td>
           <td>
-            <div class="code">
-              <el-tag type='info'>描述</el-tag>
-              <pre class="content" v-show='item.desc'><code class="snippet hljs">{{item.desc}}</code></pre>
-            </div>
+              <div class="code pointer" @mouseenter='show($event.target,item, true)' @mouseleave='hide($event.target, true)'>
+                  <el-tag type='info'>描述</el-tag>
+                </div>
           </td>
           <td>{{item.time}}</td>
           <td>
@@ -73,7 +65,7 @@
     data() {
       return {
         list: [],
-        search: ''
+        search: '',
       }
     },
     computed: {
@@ -83,42 +75,54 @@
         })
       }
     },
-    updated() {
-      var snippet = document.querySelectorAll('.snippet')
-      if (snippet !== null) {
-        snippet = Array.from(snippet)
-        snippet.forEach(item => {
-          hljs.highlightBlock(item)
-        })
-      }
-    },
     methods: {
       getList() {
         this.$api.post('/list', {
           type: 'vue'
         }).then(res => {
           this.list = res
-          this.$nextTick().then(() => {
-            var snippet = document.querySelectorAll('.snippet')
-            if (snippet !== null) {
-              snippet = Array.from(snippet)
-              snippet.forEach(item => {
-                hljs.highlightBlock(item)
-              })
-            }
-          })
+          // this.$nextTick().then(() => {
+          //   var snippet = document.querySelectorAll('.snippet')
+          //   if (snippet !== null) {
+          //     snippet = Array.from(snippet)
+          //     snippet.forEach(item => {
+          //       hljs.highlightBlock(item)
+          //     })
+          //   }
+          // })
         })
+      },
+      show(el, item, isdesc) {
+        const code = document.createElement('pre')
+        code.classList.add('content')
+        code.style.position = 'absolute'
+        code.style.bottom = '20px'
+        code.style.right = '60px'
+        code.style.zIndex = 6
+        code.innerHTML = `<code class="snippet hljs javascript">${isdesc ? (item.desc ? item.desc : 'none') : item.detail}</code>`
+        el.appendChild(code)
+        hljs.highlightBlock(code.querySelector('.snippet'))
+      },
+      hide(el){
+        el.removeChild(el.querySelector('.content'))
       },
       update(id) {
         this.$router.push(`/article/update/${id}`)
       },
       del(id) {
-        this.$api.post('/delete', {
-          type: 'vue',
-          data: id
-        }).then(res => {
-          this.$message(res)
-          this.getList()
+        this.$confirm('此操作将永久删除该项, 是否继续?', '提示', {
+          confirmButtonText: '确定',
+          cancelButtonText: '取消',
+          type: 'warning',
+          center: true
+        }).then(() => {
+          this.$api.post('/delete', {
+            type: 'vue',
+            data: id
+          }).then(res => {
+            this.$message(res)
+            this.getList()
+          })
         })
       }
     },

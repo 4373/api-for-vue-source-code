@@ -17,7 +17,7 @@ http.createServer(function (req, res) {
       
       const type = body.type ? body.type : 'vue'
       const path = `/data/${type}.json`
-      res.writeHead(200, {'Content-Type': 'text/json;charset=utf-8'})
+      res.writeHead(200, {'Content-Type': 'text/json;charset=utf-8', 'Access-Control-Allow-Origin': '*'})
       switch (req.url) {
         case '/add': 
           addItem(path, body.data).then(d => {
